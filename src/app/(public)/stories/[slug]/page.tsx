@@ -1,10 +1,10 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { AudioPlayer } from "@/components/ui/AudioPlayer";
-import { StoryJsonLd } from "@/components/seo/StoryJsonLd";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { parseMetadata } from "@/lib/utils";
+import { StoryJsonLd } from "@/components/seo/StoryJsonLd";
 
 export const dynamic = "force-dynamic";
 
@@ -22,24 +22,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!story) return {};
 
   const seo = story.seoMetadata;
-  const meta = parseMetadata(story.metadata);
 
   return {
     title: seo?.seoTitle || `${story.title} | Сказки Онлайн`,
     description: seo?.seoDescription || `Сказка "${story.title}" для детей`,
+    keywords: seo?.keywords ? JSON.parse(seo.keywords) : undefined,
     openGraph: {
       title: story.title,
       description: seo?.seoDescription || "",
-      images: [seo?.ogImage || story.coverImageUrl || ""],
+      images: [`${process.env.NEXT_PUBLIC_APP_URL || ""}/og/${story.slug}`],
       type: "article",
     },
     twitter: {
       card: "summary_large_image",
       title: story.title,
       description: seo?.seoDescription || "",
+      images: [`${process.env.NEXT_PUBLIC_APP_URL || ""}/og/${story.slug}`],
     },
     alternates: {
-      canonical: `${process.env.NEXT_PUBLIC_APP_URL}/stories/${story.slug}`,
+      canonical: `${process.env.NEXT_PUBLIC_APP_URL || ""}/stories/${story.slug}`,
     },
   };
 }
@@ -55,6 +56,7 @@ export default async function StoryPage({ params }: Props) {
       category: true,
       tags: { include: { tag: true } },
       seoMetadata: true,
+      storyCategories: { include: { category: true } },
     },
   });
 
@@ -70,30 +72,94 @@ export default async function StoryPage({ params }: Props) {
 
   const meta = parseMetadata(story.metadata);
 
+  // Get similar stories (same categories, excluding current)
+  const categoryIds = story.storyCategories.map((sc) => sc.categoryId);
+  const similarStories =
+    categoryIds.length > 0
+      ? await prisma.storyCategory.findMany({
+          where: {
+            categoryId: { in: categoryIds },
+            storyId: { not: story.id },
+          },
+          include: {
+            story: {
+              include: {
+                images: { take: 1, orderBy: { sortOrder: "asc" } },
+                category: true,
+              },
+            },
+          },
+          take: 10,
+          distinct: ["storyId"],
+        })
+      : [];
+
+  const similar = similarStories
+    .map((sc) => sc.story)
+    .filter((s) => s.status === "published")
+    .slice(0, 5);
+
   // Parse story text into paragraphs and match images
   const paragraphs = story.storyText.split(/\n\n+/).filter((p) => p.trim());
-  let imageIndex = 0;
+
+  // Build breadcrumb JSON-LD
+  const breadcrumbItems = [
+    { name: "Главная", url: "/" },
+    { name: "Сказки", url: "/stories" },
+  ];
+  if (story.category) {
+    breadcrumbItems.push({
+      name: story.category.name,
+      url: `/categories/${story.category.slug}`,
+    });
+  }
+  breadcrumbItems.push({ name: story.title, url: `/stories/${story.slug}` });
 
   return (
     <>
       <StoryJsonLd story={story as unknown as Record<string, unknown>} />
 
+      {/* BreadcrumbList JSON-LD */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: breadcrumbItems.map((item, i) => ({
+              "@type": "ListItem",
+              position: i + 1,
+              name: item.name,
+              item: `${process.env.NEXT_PUBLIC_APP_URL || ""}${item.url}`,
+            })),
+          }),
+        }}
+      />
+
       <article className="max-w-4xl mx-auto px-4 py-8">
         {/* Breadcrumb */}
-        <nav className="text-sm text-gray-500 mb-6">
-          <Link href="/" className="hover:text-purple-600">Главная</Link>
-          <span className="mx-2">/</span>
-          <Link href="/stories" className="hover:text-purple-600">Сказки</Link>
-          {story.category && (
-            <>
-              <span className="mx-2">/</span>
-              <Link href={`/categories/${story.category.slug}`} className="hover:text-purple-600">
-                {story.category.name}
-              </Link>
-            </>
-          )}
-          <span className="mx-2">/</span>
-          <span className="text-gray-900">{story.title}</span>
+        <nav className="text-sm text-gray-500 mb-6" aria-label="Breadcrumb">
+          <ol className="flex flex-wrap items-center gap-1">
+            <li>
+              <Link href="/" className="hover:text-purple-600">Главная</Link>
+            </li>
+            <li><span className="mx-2">/</span></li>
+            <li>
+              <Link href="/stories" className="hover:text-purple-600">Сказки</Link>
+            </li>
+            {story.category && (
+              <>
+                <li><span className="mx-2">/</span></li>
+                <li>
+                  <Link href={`/categories/${story.category.slug}`} className="hover:text-purple-600">
+                    {story.category.name}
+                  </Link>
+                </li>
+              </>
+            )}
+            <li><span className="mx-2">/</span></li>
+            <li className="text-gray-900">{story.title}</li>
+          </ol>
         </nav>
 
         {/* Header */}
@@ -141,12 +207,12 @@ export default async function StoryPage({ params }: Props) {
             const img = story.images[i] || null;
             return (
               <div key={i} className="mb-6">
-                <p>{paragraph}</p>
+                <p className="whitespace-pre-line">{paragraph}</p>
                 {img && (
                   <figure className="my-6">
                     <img
                       src={img.imageUrl}
-                      alt={img.altText || `Иллюстрация ${i + 1}`}
+                      alt={img.altText || `Иллюстрация к сказке ${story.title} — часть ${i + 1}`}
                       className="rounded-lg w-full"
                       loading="lazy"
                       width={800}
@@ -166,7 +232,8 @@ export default async function StoryPage({ params }: Props) {
 
         {/* Tags */}
         {story.tags.length > 0 && (
-          <footer className="mt-12 pt-8 border-t">
+          <div className="mt-8 pt-6 border-t">
+            <h2 className="text-lg font-bold mb-3">Теги</h2>
             <div className="flex flex-wrap gap-2">
               {story.tags.map((st) => (
                 <Link
@@ -178,7 +245,40 @@ export default async function StoryPage({ params }: Props) {
                 </Link>
               ))}
             </div>
-          </footer>
+          </div>
+        )}
+
+        {/* Похожие сказки */}
+        {similar.length > 0 && (
+          <div className="mt-12 pt-8 border-t">
+            <h2 className="text-2xl font-bold mb-6">Похожие сказки</h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+              {similar.map((s) => (
+                <Link
+                  key={s.id}
+                  href={`/stories/${s.slug}`}
+                  className="group block"
+                >
+                  <div className="aspect-[3/4] rounded-xl overflow-hidden bg-gray-100">
+                    {s.coverImageUrl || s.images?.[0]?.imageUrl ? (
+                      <img
+                        src={s.coverImageUrl || s.images?.[0]?.imageUrl}
+                        alt={s.title}
+                        className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center">
+                        <span className="text-4xl">📖</span>
+                      </div>
+                    )}
+                  </div>
+                  <h3 className="mt-2 font-semibold text-sm text-gray-900 line-clamp-2 group-hover:text-purple-600 transition-colors">
+                    {s.title}
+                  </h3>
+                </Link>
+              ))}
+            </div>
+          </div>
         )}
       </article>
     </>

@@ -26,6 +26,7 @@ model Story {
   tags       StoryTag[]
   category   Category?  @relation(fields: [categoryId], references: [id])
   categoryId String?
+  storyCategories StoryCategory[]
   seoMetadata SeoMetadata?
 }
 
@@ -60,6 +61,7 @@ model Category {
   parent      Category? @relation("CategoryTree", fields: [parentId], references: [id])
   children    Category[] @relation("CategoryTree")
   stories     Story[]
+  storyCategories StoryCategory[]
   metadata    String    @default("{}")
   createdAt   DateTime  @default(now())
 }
@@ -80,6 +82,15 @@ model StoryTag {
   tagId   String
 
   @@id([storyId, tagId])
+}
+
+model StoryCategory {
+  story      Story    @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  storyId    String
+  categoryId String
+
+  @@id([storyId, categoryId])
 }
 
 model SeoMetadata {

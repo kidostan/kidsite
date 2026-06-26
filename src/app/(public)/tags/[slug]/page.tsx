@@ -12,7 +12,8 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const tag = await prisma.tag.findUnique({ where: { slug } });
+  const decodedSlug = decodeURIComponent(slug);
+  const tag = await prisma.tag.findUnique({ where: { slug: decodedSlug } });
   if (!tag) return {};
 
   return {
@@ -23,9 +24,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function TagPage({ params }: Props) {
   const { slug } = await params;
+  const decodedSlug = decodeURIComponent(slug);
 
   const tag = await prisma.tag.findUnique({
-    where: { slug },
+    where: { slug: decodedSlug },
     include: {
       stories: {
         include: {

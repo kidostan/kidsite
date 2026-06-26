@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 interface Story {
   id: string;
   title: string;
+  slug: string;
   storyText: string;
   audioUrl: string | null;
   coverImageUrl: string | null;
@@ -116,7 +117,19 @@ export default function EditStoryPage({ params }: { params: Promise<{ id: string
   return (
     <div className="max-w-4xl">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">Редактирование</h1>
+        <div className="flex items-center gap-4">
+          <h1 className="text-2xl font-bold">Редактирование</h1>
+          {story.slug && (
+            <a
+              href={`/stories/${story.slug}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-purple-600 hover:text-purple-700 underline"
+            >
+              Открыть на сайте ↗
+            </a>
+          )}
+        </div>
         <button
           onClick={handleDelete}
           disabled={deleting}

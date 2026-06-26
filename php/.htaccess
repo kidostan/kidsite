@@ -1,0 +1,21 @@
+RewriteEngine On
+
+# Remove .php extension
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^(.*)$ $1.php [L]
+
+# Route /stories to stories.php
+RewriteRule ^stories/?$ stories.php [L,QSA]
+RewriteRule ^stories/([^/]+)/?$ story.php?slug=$1 [L,QSA]
+
+# Route /categories
+RewriteRule ^categories/?$ categories.php [L,QSA]
+RewriteRule ^categories/([^/]+)/?$ category.php?slug=$1 [L,QSA]
+
+# Route /tags
+RewriteRule ^tags/?$ tags.php [L,QSA]
+RewriteRule ^tags/([^/]+)/?$ tag.php?slug=$1 [L,QSA]
+
+# Setup
+RewriteRule ^setup/?$ setup.php [L]
