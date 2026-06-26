@@ -1,0 +1,95 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Story {
+  id                 String   @id @default(uuid())
+  title              String
+  slug               String   @unique
+  storyText          String
+  audioUrl           String?
+  coverImageUrl      String?
+  readingTimeMinutes Int?
+  viewCount          Int      @default(0)
+  status             String   @default("draft")
+  metadata           String   @default("{}")
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  images     StoryImage[]
+  paragraphs StoryParagraph[]
+  tags       StoryTag[]
+  category   Category?  @relation(fields: [categoryId], references: [id])
+  categoryId String?
+  seoMetadata SeoMetadata?
+}
+
+model StoryImage {
+  id             String  @id @default(uuid())
+  story          Story   @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  storyId        String
+  paragraphIndex Int
+  imageUrl       String
+  altText        String?
+  caption        String?
+  sortOrder      Int     @default(0)
+}
+
+model StoryParagraph {
+  id             String  @id @default(uuid())
+  story          Story   @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  storyId        String
+  paragraphIndex Int
+  content        String
+  hasImage       Boolean @default(false)
+
+  @@unique([storyId, paragraphIndex])
+}
+
+model Category {
+  id          String    @id @default(uuid())
+  name        String
+  slug        String    @unique
+  description String?
+  parentId    String?
+  parent      Category? @relation("CategoryTree", fields: [parentId], references: [id])
+  children    Category[] @relation("CategoryTree")
+  stories     Story[]
+  metadata    String    @default("{}")
+  createdAt   DateTime  @default(now())
+}
+
+model Tag {
+  id         String     @id @default(uuid())
+  name       String     @unique
+  slug       String     @unique
+  usageCount Int        @default(0)
+  stories    StoryTag[]
+  createdAt  DateTime   @default(now())
+}
+
+model StoryTag {
+  story   Story @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  tag     Tag   @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  storyId String
+  tagId   String
+
+  @@id([storyId, tagId])
+}
+
+model SeoMetadata {
+  id             String  @id @default(uuid())
+  story          Story   @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  storyId        String  @unique
+  seoTitle       String?
+  seoDescription String?
+  ogImage        String?
+  keywords       String  @default("[]")
+  canonicalUrl   String?
+  jsonLd         String?
+}
