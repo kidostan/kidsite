@@ -4,7 +4,12 @@ import { StoryCard } from "@/components/public/StoryCard";
 import type { Metadata } from "next";
 import { parseMetadata } from "@/lib/utils";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
+
+export async function generateStaticParams() {
+  const categories = await prisma.category.findMany({ select: { slug: true } });
+  return categories.map((c) => ({ slug: c.slug }));
+}
 
 type Props = {
   params: Promise<{ slug: string }>;

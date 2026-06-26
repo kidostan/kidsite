@@ -3,7 +3,7 @@ import { StoryCard } from "@/components/public/StoryCard";
 import { parseMetadata } from "@/lib/utils";
 import Link from "next/link";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 export const metadata = {
   title: "Все сказки — Сказки Онлайн",

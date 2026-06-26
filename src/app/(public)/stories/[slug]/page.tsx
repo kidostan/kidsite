@@ -5,8 +5,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { parseMetadata } from "@/lib/utils";
 import { StoryJsonLd } from "@/components/seo/StoryJsonLd";
+import { ViewCounter } from "@/components/public/ViewCounter";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
+
+export async function generateStaticParams() {
+  const stories = await prisma.story.findMany({ select: { slug: true } });
+  return stories.map((s) => ({ slug: s.slug }));
+}
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -64,12 +70,6 @@ export default async function StoryPage({ params }: Props) {
     notFound();
   }
 
-  // Increment view count
-  await prisma.story.update({
-    where: { id: story.id },
-    data: { viewCount: { increment: 1 } },
-  });
-
   const meta = parseMetadata(story.metadata);
 
   // Get similar stories (same categories, excluding current)
@@ -117,6 +117,7 @@ export default async function StoryPage({ params }: Props) {
 
   return (
     <>
+      <ViewCounter slug={story.slug} />
       <StoryJsonLd story={story as unknown as Record<string, unknown>} />
 
       {/* BreadcrumbList JSON-LD */}
