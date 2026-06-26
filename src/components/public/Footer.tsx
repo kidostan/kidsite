@@ -17,6 +17,7 @@ export function Footer() {
             <Link href="/stories" className="hover:text-purple-600">Сказки</Link>
             <Link href="/categories" className="hover:text-purple-600">Категории</Link>
             <Link href="/tags" className="hover:text-purple-600">Теги</Link>
+            <Link href="/privacy" className="hover:text-purple-600">Политика конфиденциальности</Link>
           </nav>
         </div>
         <div className="text-center text-sm text-gray-400 mt-6">
