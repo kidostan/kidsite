@@ -7,12 +7,7 @@ import { parseMetadata } from "@/lib/utils";
 import { StoryJsonLd } from "@/components/seo/StoryJsonLd";
 import { ViewCounter } from "@/components/public/ViewCounter";
 
-export const revalidate = 3600;
-
-export async function generateStaticParams() {
-  const stories = await prisma.story.findMany({ select: { slug: true } });
-  return stories.map((s) => ({ slug: s.slug }));
-}
+export const dynamic = "force-dynamic";
 
 type Props = {
   params: Promise<{ slug: string }>;
