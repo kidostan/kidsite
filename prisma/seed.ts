@@ -2,8 +2,8 @@ import { PrismaClient } from "../src/generated/prisma/client";
 import { PrismaLibSql } from "@prisma/adapter-libsql";
 import { resolve } from "path";
 
-const dbPath = resolve(__dirname, "..", "dev.db");
-const adapter = new PrismaLibSql({ url: `file:${dbPath}` });
+const dbUrl = process.env.DATABASE_URL || `file:${resolve(__dirname, "..", "prod.db")}`;
+const adapter = new PrismaLibSql({ url: dbUrl });
 const prisma = new PrismaClient({ adapter });
 
 type StoryInput = {
