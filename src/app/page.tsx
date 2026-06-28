@@ -4,8 +4,6 @@ import { StoryCard } from "@/components/public/StoryCard";
 import { parseMetadata } from "@/lib/utils";
 import type { Metadata } from "next";
 
-export const dynamic = "force-dynamic";
-
 export const metadata: Metadata = {
   title: "Сказки для детей онлайн — читать бесплатно | Сказки Онлайн",
   description: "Читайте бесплатно сказки для детей онлайн. Народные, авторские, по возрасту. Народные сказки, Пушкин, Чуковский, Андерсен и другие.",

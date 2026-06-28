@@ -1,22 +1,8 @@
 import Link from "next/link";
 import { prisma } from "@/lib/db";
 
-export const dynamic = "force-dynamic";
-
-export default async function AdminStoriesPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ status?: string }>;
-}) {
-  const params = await searchParams;
-  const where: Record<string, unknown> = {};
-
-  if (params.status) {
-    where.status = params.status;
-  }
-
+export default async function AdminStoriesPage() {
   const stories = await prisma.story.findMany({
-    where,
     include: {
       category: true,
       _count: { select: { images: true } },
@@ -42,28 +28,6 @@ export default async function AdminStoriesPage({
             Импорт
           </Link>
         </div>
-      </div>
-
-      {/* Filters */}
-      <div className="flex gap-2 mb-4">
-        <Link
-          href="/admin/stories"
-          className={`px-3 py-1 rounded-full text-sm ${!params.status ? "bg-purple-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}
-        >
-          Все
-        </Link>
-        <Link
-          href="/admin/stories?status=published"
-          className={`px-3 py-1 rounded-full text-sm ${params.status === "published" ? "bg-green-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}
-        >
-          Опубликованные
-        </Link>
-        <Link
-          href="/admin/stories?status=draft"
-          className={`px-3 py-1 rounded-full text-sm ${params.status === "draft" ? "bg-yellow-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}
-        >
-          Черновики
-        </Link>
       </div>
 
       {/* Stories Table */}

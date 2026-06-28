@@ -3,6 +3,8 @@ import { prisma } from "@/lib/db";
 import { z } from "zod";
 import { generateSlug } from "@/lib/utils";
 
+export const dynamic = "force-static";
+
 const categorySchema = z.object({
   name: z.string().min(1).max(200),
   description: z.string().optional(),

@@ -3,6 +3,8 @@ import { prisma } from "@/lib/db";
 import { z } from "zod";
 import { generateSlug, readingTime, parseStoryParagraphs, uniqueSlug } from "@/lib/utils";
 
+export const dynamic = "force-static";
+
 const storySchema = z.object({
   title: z.string().min(1).max(500),
   story_text: z.string().min(1),

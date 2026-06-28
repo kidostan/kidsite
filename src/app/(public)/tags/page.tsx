@@ -1,8 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/db";
 
-export const dynamic = "force-dynamic";
-
 export const metadata = {
   title: "Теги — Сказки Онлайн",
 };

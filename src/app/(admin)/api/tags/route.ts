@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 
+export const dynamic = "force-static";
+
 export async function GET() {
   const tags = await prisma.tag.findMany({
     orderBy: { usageCount: "desc" },

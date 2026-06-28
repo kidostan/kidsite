@@ -3,6 +3,8 @@ import { prisma } from "@/lib/db";
 import { generateSlug, readingTime } from "@/lib/utils";
 import Papa from "papaparse";
 
+export const dynamic = "force-static";
+
 interface ImportRow {
   title: string;
   story_text?: string;

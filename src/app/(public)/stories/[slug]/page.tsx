@@ -5,9 +5,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { parseMetadata } from "@/lib/utils";
 import { StoryJsonLd } from "@/components/seo/StoryJsonLd";
-import { ViewCounter } from "@/components/public/ViewCounter";
 
-export const dynamic = "force-dynamic";
+export async function generateStaticParams() {
+  const stories = await prisma.story.findMany({
+    where: { status: "published" },
+    select: { slug: true },
+  });
+  return stories.map((s) => ({ slug: s.slug }));
+}
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -67,7 +72,6 @@ export default async function StoryPage({ params }: Props) {
 
   const meta = parseMetadata(story.metadata);
 
-  // Get similar stories (same categories, excluding current)
   const categoryIds = story.storyCategories.map((sc) => sc.categoryId);
   const similarStories =
     categoryIds.length > 0
@@ -94,10 +98,8 @@ export default async function StoryPage({ params }: Props) {
     .filter((s) => s.status === "published")
     .slice(0, 5);
 
-  // Parse story text into paragraphs and match images
   const paragraphs = story.storyText.split(/\n\n+/).filter((p) => p.trim());
 
-  // Build breadcrumb JSON-LD
   const breadcrumbItems = [
     { name: "Главная", url: "/" },
     { name: "Сказки", url: "/stories" },
@@ -112,10 +114,8 @@ export default async function StoryPage({ params }: Props) {
 
   return (
     <>
-      <ViewCounter slug={story.slug} />
       <StoryJsonLd story={story as unknown as Record<string, unknown>} />
 
-      {/* BreadcrumbList JSON-LD */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -133,7 +133,6 @@ export default async function StoryPage({ params }: Props) {
       />
 
       <article className="max-w-4xl mx-auto px-4 py-8">
-        {/* Breadcrumb */}
         <nav className="text-sm text-gray-500 mb-6" aria-label="Breadcrumb">
           <ol className="flex flex-wrap items-center gap-1">
             <li>
@@ -158,7 +157,6 @@ export default async function StoryPage({ params }: Props) {
           </ol>
         </nav>
 
-        {/* Header */}
         <header className="mb-8">
           <h1 className="text-4xl font-bold text-gray-900">{story.title}</h1>
           <div className="flex gap-4 mt-4 text-gray-600 flex-wrap">
@@ -170,13 +168,6 @@ export default async function StoryPage({ params }: Props) {
                 {story.readingTimeMinutes} мин чтения
               </span>
             )}
-            <span className="flex items-center gap-1">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-              </svg>
-              {story.viewCount} просмотров
-            </span>
             {Number(meta.age_min) > 0 && Number(meta.age_max) > 0 && (
               <span className="bg-purple-100 text-purple-700 px-3 py-0.5 rounded-full text-sm">
                 {String(meta.age_min)}–{String(meta.age_max)} лет
@@ -190,14 +181,12 @@ export default async function StoryPage({ params }: Props) {
           </div>
         </header>
 
-        {/* Audio Player */}
         {story.audioUrl && (
           <div className="mb-8">
             <AudioPlayer src={story.audioUrl} title="Слушать сказку" />
           </div>
         )}
 
-        {/* Story Content */}
         <div className="prose prose-lg max-w-none">
           {paragraphs.map((paragraph, i) => {
             const img = story.images[i] || null;
@@ -226,7 +215,6 @@ export default async function StoryPage({ params }: Props) {
           })}
         </div>
 
-        {/* Tags */}
         {story.tags.length > 0 && (
           <div className="mt-8 pt-6 border-t">
             <h2 className="text-lg font-bold mb-3">Теги</h2>
@@ -244,7 +232,6 @@ export default async function StoryPage({ params }: Props) {
           </div>
         )}
 
-        {/* Похожие сказки */}
         {similar.length > 0 && (
           <div className="mt-12 pt-8 border-t">
             <h2 className="text-2xl font-bold mb-6">Похожие сказки</h2>

@@ -3,45 +3,15 @@ import { StoryCard } from "@/components/public/StoryCard";
 import { parseMetadata } from "@/lib/utils";
 import Link from "next/link";
 
-export const dynamic = "force-dynamic";
-
 export const metadata = {
   title: "Все сказки — Сказки Онлайн",
   description: "Читайте бесплатно сказки для детей онлайн. Народные, авторские, по возрасту.",
 };
 
-export default async function StoriesPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ q?: string; category?: string; tag?: string }>;
-}) {
-  const params = await searchParams;
-  const { q, category, tag } = params;
-
-  const where: Record<string, unknown> = { status: "published" };
-
-  if (q) {
-    where.OR = [
-      { title: { contains: q } },
-      { storyText: { contains: q } },
-    ];
-  }
-
-  if (category) {
-    where.storyCategories = {
-      some: { category: { slug: category } },
-    };
-  }
-
-  if (tag) {
-    where.tags = {
-      some: { tag: { slug: tag } },
-    };
-  }
-
+export default async function StoriesPage() {
   const [stories, categories] = await Promise.all([
     prisma.story.findMany({
-      where,
+      where: { status: "published" },
       include: {
         images: { take: 1, orderBy: { sortOrder: "asc" } },
         category: true,
@@ -58,34 +28,18 @@ export default async function StoriesPage({
   return (
     <main className="flex-1 py-8">
       <div className="container mx-auto px-4">
-        <h1 className="text-3xl font-bold mb-6">
-          {q ? `Результаты поиска: "${q}"` : "Все сказки"}
-        </h1>
+        <h1 className="text-3xl font-bold mb-6">Все сказки</h1>
 
         <div className="flex flex-col md:flex-row gap-8">
           {/* Sidebar — категории */}
           <aside className="md:w-64 shrink-0">
             <h2 className="font-bold text-gray-900 mb-3">Категории</h2>
             <nav className="space-y-1">
-              <Link
-                href="/stories"
-                className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
-                  !category
-                    ? "bg-purple-100 text-purple-700 font-medium"
-                    : "text-gray-600 hover:bg-gray-100"
-                }`}
-              >
-                Все сказки
-              </Link>
               {categories.map((cat) => (
                 <Link
                   key={cat.id}
-                  href={`/stories?category=${cat.slug}`}
-                  className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
-                    category === cat.slug
-                      ? "bg-purple-100 text-purple-700 font-medium"
-                      : "text-gray-600 hover:bg-gray-100"
-                  }`}
+                  href={`/categories/${cat.slug}`}
+                  className="block px-3 py-2 rounded-lg text-sm transition-colors text-gray-600 hover:bg-gray-100"
                 >
                   {cat.name}
                   <span className="text-gray-400 ml-1">({cat._count.stories})</span>

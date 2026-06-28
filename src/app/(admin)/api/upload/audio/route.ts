@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { writeFile, mkdir } from "fs/promises";
 import path from "path";
 
+export const dynamic = "force-static";
+
 const UPLOAD_DIR = path.join(process.cwd(), "public", "uploads", "audio");
 const MAX_SIZE = 50 * 1024 * 1024; // 50MB
 
