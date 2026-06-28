@@ -30,6 +30,15 @@
 /prod.db
 /prisma/seed.ts.backup
 
+# temp scripts
+analyze_stories.js
+batch*.js
+check_state.js
+filter_seed.js
+replace_texts.js
+replace_texts_v2.js
+rewrite1.js
+
 # uploads
 /public/uploads/
 
