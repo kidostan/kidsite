@@ -6,6 +6,8 @@ import Link from "next/link";
 import { parseMetadata } from "@/lib/utils";
 import { StoryJsonLd } from "@/components/seo/StoryJsonLd";
 
+export const dynamic = "force-static";
+
 export async function generateStaticParams() {
   const stories = await prisma.story.findMany({
     where: { status: "published" },

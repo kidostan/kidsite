@@ -4,6 +4,8 @@ import { StoryCard } from "@/components/public/StoryCard";
 import type { Metadata } from "next";
 import { parseMetadata } from "@/lib/utils";
 
+export const dynamic = "force-static";
+
 export async function generateStaticParams() {
   const categories = await prisma.category.findMany({
     select: { slug: true },
