@@ -6,7 +6,7 @@ interface Category {
   id: string;
   name: string;
   slug: string;
-  _count: { stories: number };
+  _count: { storyCategories: number };
 }
 
 export default function AdminCategoriesPage() {
@@ -35,7 +35,7 @@ export default function AdminCategoriesPage() {
 
     if (res.ok) {
       const cat = await res.json();
-      setCategories((prev) => [...prev, { ...cat, _count: { stories: 0 } }]);
+      setCategories((prev) => [...prev, { ...cat, _count: { storyCategories: 0 } }]);
       setName("");
       setDescription("");
     }
@@ -90,7 +90,7 @@ export default function AdminCategoriesPage() {
               <div>
                 <span className="font-medium">{cat.name}</span>
                 <span className="text-sm text-gray-500 ml-3">
-                  {cat._count.stories} сказок
+                  {cat._count.storyCategories} сказок
                 </span>
               </div>
               <button

@@ -39,7 +39,7 @@ export default async function HomePage() {
       }),
       prisma.category.findMany({
         where: { slug: { in: ["do-3-let", "ot-3-do-5-let", "ot-5-do-8-let", "ot-8-do-12-let"] } },
-        include: { _count: { select: { stories: true } } },
+        include: { _count: { select: { storyCategories: true } } },
         orderBy: { slug: "asc" },
       }),
       prisma.category.findMany({
@@ -56,7 +56,7 @@ export default async function HomePage() {
             ],
           },
         },
-        include: { _count: { select: { stories: true } } },
+        include: { _count: { select: { storyCategories: true } } },
       }),
     ]);
 
@@ -111,7 +111,7 @@ export default async function HomePage() {
                 </div>
                 <h3 className="font-bold text-gray-900">{cat.name}</h3>
                 <p className="text-sm text-gray-500 mt-1">
-                  {cat._count.stories} сказок
+                  {cat._count.storyCategories} сказок
                 </p>
               </Link>
             ))}
@@ -132,7 +132,7 @@ export default async function HomePage() {
               >
                 <h3 className="font-semibold text-gray-900 text-sm">{cat.name}</h3>
                 <p className="text-xs text-gray-500 mt-1">
-                  {cat._count.stories} сказок
+                  {cat._count.storyCategories} сказок
                 </p>
               </Link>
             ))}

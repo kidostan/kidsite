@@ -171,10 +171,25 @@ export default function PrivacyPage() {
                 </tr>
                 <tr>
                   <td className="border border-gray-300 px-4 py-2 font-semibold">Виды обработки персональных данных</td>
-                  <td className="border border-gray-300 px-4 py-2">Передача персональных данных</td>
+                  <td className="border border-gray-300 px-4 py-2">Не осуществляются. Сайт не собирает, не хранит и не передаёт персональные данные.</td>
                 </tr>
               </tbody>
             </table>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold mt-8 mb-4">6.1. Что мы НЕ собираем и НЕ храним</h2>
+            <p>Сайт skazkinason.ru не осуществляет сбор, хранение и обработку следующих данных:</p>
+            <ul className="list-disc pl-6 space-y-2 mt-3">
+              <li>Имя пользователя и фамилию</li>
+              <li>Номера телефонов</li>
+              <li>Адреса электронной почты</li>
+              <li>Геолокацию</li>
+              <li>Историю посещений и просмотров</li>
+              <li>IP-адреса</li>
+              <li>Файлы cookie</li>
+              <li>Данные файлов cookie и технические идентификаторы</li>
+            </ul>
           </section>
 
           <section>

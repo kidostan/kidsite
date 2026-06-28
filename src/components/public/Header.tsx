@@ -18,22 +18,7 @@ export function Header() {
             Теги
           </Link>
         </nav>
-        <div className="flex items-center gap-4">
-          <form action="/stories" method="GET" className="hidden md:block">
-            <input
-              type="text"
-              name="q"
-              placeholder="Поиск сказок..."
-              className="border border-gray-300 rounded-full px-4 py-1.5 text-sm focus:outline-none focus:border-purple-500 w-48"
-            />
-          </form>
-          <Link
-            href="/admin"
-            className="text-sm text-gray-500 hover:text-purple-600"
-          >
-            CMS
-          </Link>
-        </div>
+        <div className="flex items-center gap-4" />
       </div>
     </header>
   );

@@ -5,8 +5,9 @@ import { generateSlug, readingTime, parseStoryParagraphs, uniqueSlug } from "@/l
 
 export const dynamic = "force-static";
 
-export function generateStaticParams() {
-  return [{ id: "placeholder" }];
+export async function generateStaticParams() {
+  const stories = await prisma.story.findMany({ select: { id: true } });
+  return stories.map((s) => ({ id: s.id }));
 }
 
 const storyUpdateSchema = z.object({

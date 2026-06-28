@@ -27,6 +27,8 @@
 # database
 /dev.db
 /dev.db-journal
+/prod.db
+/prisma/seed.ts.backup
 
 # uploads
 /public/uploads/

@@ -8,7 +8,7 @@ export const metadata = {
 export default async function CategoriesPage() {
   const categories = await prisma.category.findMany({
     include: {
-      _count: { select: { stories: true } },
+      _count: { select: { storyCategories: true } },
     },
     orderBy: { name: "asc" },
   });
@@ -30,7 +30,7 @@ export default async function CategoriesPage() {
               >
                 <h3 className="font-bold text-lg">{cat.name}</h3>
                 <p className="text-sm text-gray-500 mt-1">
-                  {cat._count.stories} {cat._count.stories === 1 ? "сказка" : "сказок"}
+                  {cat._count.storyCategories} {cat._count.storyCategories === 1 ? "сказка" : "сказок"}
                 </p>
               </Link>
             ))}

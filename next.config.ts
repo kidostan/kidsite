@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: "export",
+  output: process.env.STATIC_EXPORT === "true" ? "export" : undefined,
   typescript: {
     ignoreBuildErrors: true,
   },

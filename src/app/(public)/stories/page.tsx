@@ -20,7 +20,7 @@ export default async function StoriesPage() {
       take: 60,
     }),
     prisma.category.findMany({
-      include: { _count: { select: { stories: true } } },
+      include: { _count: { select: { storyCategories: true } } },
       orderBy: { name: "asc" },
     }),
   ]);
@@ -42,7 +42,7 @@ export default async function StoriesPage() {
                   className="block px-3 py-2 rounded-lg text-sm transition-colors text-gray-600 hover:bg-gray-100"
                 >
                   {cat.name}
-                  <span className="text-gray-400 ml-1">({cat._count.stories})</span>
+                  <span className="text-gray-400 ml-1">({cat._count.storyCategories})</span>
                 </Link>
               ))}
             </nav>
