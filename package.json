@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && prisma db push --accept-data-loss && prisma db seed && next build",
+    "build": "prisma generate && prisma db push --accept-data-loss && prisma db seed && cross-env STATIC_EXPORT=true next build",
     "prebuild": "prisma generate || true",
     "start": "next start",
     "lint": "eslint",
@@ -37,6 +37,7 @@
     "seed": "npx tsx prisma/seed.ts"
   },
   "devDependencies": {
+    "cross-env": "^10.1.0",
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
     "prisma": "^7.8.0"
