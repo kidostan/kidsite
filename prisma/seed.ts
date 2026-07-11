@@ -1,4 +1,4 @@
-import { PrismaClient } from "../src/generated/prisma/client";
+﻿import { PrismaClient } from "../src/generated/prisma/client";
 import { PrismaLibSql } from "@prisma/adapter-libsql";
 import { resolve } from "path";
 
@@ -18,6 +18,7 @@ type StoryInput = {
   seoTitle: string;
   seoDescription: string;
   seoKeywords: string;
+  coverImageUrl?: string;
 };
 
 const stories: StoryInput[] = [
@@ -789,6 +790,7 @@ async function main() {
         title: s.title,
         slug: s.slug,
         storyText: s.storyText,
+        coverImageUrl: s.coverImageUrl || null,
         readingTimeMinutes: readingTime,
         status: "published",
         metadata: JSON.stringify({
