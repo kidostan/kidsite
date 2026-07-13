@@ -790,7 +790,7 @@ async function main() {
         title: s.title,
         slug: s.slug,
         storyText: s.storyText,
-        coverImageUrl: s.coverImageUrl || null,
+        coverImageUrl: s.coverImageUrl || `/images/${s.slug}_v3.webp`,
         readingTimeMinutes: readingTime,
         status: "published",
         metadata: JSON.stringify({
