@@ -97,7 +97,171 @@ src/
 - 97 сказок с полными текстами и метаданными
 - 215 тегов
 
-## Деплой на Timeweb Cloud Apps
+## Пошаговая инструкция: Git + Timeweb
+
+### 1. Первичная настройка Git
+
+```bash
+# Установить Git: https://git-scm.com/download/win
+
+# Настроить имя и email
+git config --global user.name "kidostan"
+git config --global user.email "leadokop@gmail.com"
+
+# Перейти в папку проекта
+cd Z:\KIDSITE
+
+# Инициализировать репозиторий
+git init
+git branch -M main
+
+# Добавить remote (если репозиторий уже создан на GitHub)
+git remote add origin https://github.com/kidostan/kidsite.git
+```
+
+### 2. Первый коммит и pushes
+
+```bash
+# Добавить все файлы
+git add -A
+
+# Проверить что добавится
+git status
+
+# Коммит
+git commit -m "Initial commit: 97 сказок, CMS, SEO"
+
+# Push на GitHub
+git push -u origin main
+```
+
+### 3. Создание приложения на Timeweb
+
+1. Зайти на https://timeweb.cloud → Cloud Apps
+2. Создать новое приложение
+3. Выбрать **GitHub** как источник кода
+4. Подключить аккаунт GitHub (если первый раз — авторизовать приложение Timeweb)
+5. Выбрать репозиторий `kidostan/kidsite`
+6. Выбрать ветку `main`
+
+### 4. Настройка сборки в Timeweb
+
+В панели приложения → **Настройки**:
+
+| Параметр | Значение |
+|----------|----------|
+| Framework | Next.js |
+| Build cmd | `npm run build` |
+| Run cmd | *(оставить пустым)* |
+| Index dir | `out` |
+
+### 5. Переменные среды в Timeweb
+
+В панели приложения → **Переменные среды** (Env vars):
+
+| Переменная | Значение |
+|------------|----------|
+| `STATIC_EXPORT` | `true` |
+| `NEXT_PUBLIC_APP_URL` | `https://skazkinason.ru` |
+| `DATABASE_URL` | `file:./prod.db` |
+
+> **Важно:** `STATIC_EXPORT=true` — обязательно! Без него Next.js попытается запустить SSR-сервер, которого Timeweb не поддерживает.
+
+### 6. Домен
+
+1. В панели Timeweb → **Домены**
+2. Добавить `skazkinason.ru`
+3. Настроить DNS у регистратора (reg.ru):
+   - A-запись → IP Timeweb (узнать в панели)
+   - CNAME `www` → домен приложения Timeweb
+4. SSL-сертификат установить через панель Timeweb → SSL
+
+### 7. Автодеплой
+
+После настройки каждый `git push origin main` автоматически запускает сборку и деплой на Timeweb. Нужно только:
+
+```bash
+git add -A
+git commit -m "описание изменений"
+git push origin main
+```
+
+Через 2-5 минут сайт обновится на `skazkinason.ru`.
+
+### 8. Редактирование сказок (workflow)
+
+```
+1. Запустить локально:  npm run dev
+2. Открыть CMS:         http://localhost:3000/admin
+3. Войти:              пароль admin123
+4. Редактировать сказки / категории / теги
+5. Закоммитить:         git add -A && git commit -m "описание" && git push
+6. Timeweb деплоит автоматически
+```
+
+### Полезные команды Timeweb CLI
+
+```bash
+# Установить CLI (если нужно управлять через терминал)
+npm install -g @timeweb-cloud/cli
+
+# Авторизация
+twc login
+
+# Просмотр логов деплоя
+twc app logs <app-id>
+
+# Ручной деплой
+twc app deploy <app-id>
+```
+
+ID приложения: `215419`
+
+## Деплой на другой хостинг (не Timeweb)
+
+Если захочешь перенести с Timeweb:
+
+### Вариант A: Любой VPS (Vultr, DigitalOcean, etc.)
+
+```bash
+# 1. Подключиться к серверу
+ssh root@<ip>
+
+# 2. Установить Node.js 22+
+curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+apt install -y nodejs
+
+# 3. Клонировать репозиторий
+git clone https://github.com/kidostan/kidsite.git
+cd kidsite
+
+# 4. Установить зависимости и собрать
+npm install
+npx prisma generate
+npx prisma db push
+npx prisma db seed
+npm run build
+
+# 5. Запустить (или через PM2)
+npm start
+# или
+pm2 start npm --name kidsite -- start
+```
+
+### Вариант B: Статический хостинг (Netlify, Vercel, GitHub Pages)
+
+```bash
+# 1. Собрать статику
+npm install
+npx prisma generate && npx prisma db push && npx prisma db seed
+STATIC_EXPORT=true npm run build
+
+# 2. Загрузить папку out/ на хостинг
+```
+
+Для Netlify/Vercel: подключить GitHub-репозиторий, указать build command `npm run build` и publish directory `out`.
+
+> **Важно:** На статическом хостинге CMS не работает — сказки редактируются только через `npm run dev` локально + коммит в git.
 
 ### Важно: статический экспорт
 
