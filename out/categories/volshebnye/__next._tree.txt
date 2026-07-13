@@ -1,0 +1,10 @@
+:HL["/_next/static/chunks/42946kb2_5u4r.css","style"]
+:HL["/images/carevna-lyagushka_v3.webp","image"]
+:HL["/images/skazka-o-care-saltane_v3.webp","image"]
+:HL["/images/skazka-o-myortvoy-carevne_v3.webp","image"]
+:HL["/images/skazka-o-zolotom-petushke_v3.webp","image"]
+:HL["/images/zhar-ptica_v3.webp","image"]
+:HL["/images/sivka-burka_v3.webp","image"]
+:HL["/images/po-shchuchyu-veleniyu_v3.webp","image"]
+:HL["/images/snegurochka_v3.webp","image"]
+0:{"tree":{"name":"","param":null,"prefetchHints":20,"slots":{"children":{"name":"(public)","param":null,"prefetchHints":0,"slots":{"children":{"name":"categories","param":null,"prefetchHints":0,"slots":{"children":{"name":"slug","param":{"type":"d","key":"volshebnye","siblings":null},"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}}}}}},"staleTime":300,"buildId":"FQxAyP4Gi4cYfdRCCyVDM"}

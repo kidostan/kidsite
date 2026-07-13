@@ -1,0 +1,7 @@
+:HL["/_next/static/chunks/42946kb2_5u4r.css","style"]
+:HL["/images/repka_v3.webp","image"]
+:HL["/images/teremok_v3.webp","image"]
+:HL["/images/seraya-sheyka_v3.webp","image"]
+:HL["/images/bremenskie-muzykanty_v3.webp","image"]
+:HL["/images/goluboy-schenok_v3.webp","image"]
+0:{"tree":{"name":"","param":null,"prefetchHints":20,"slots":{"children":{"name":"(public)","param":null,"prefetchHints":0,"slots":{"children":{"name":"tags","param":null,"prefetchHints":0,"slots":{"children":{"name":"slug","param":{"type":"d","key":"%D0%B4%D1%80%D1%83%D0%B6%D0%B1%D0%B0","siblings":null},"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}}}}}},"staleTime":300,"buildId":"FQxAyP4Gi4cYfdRCCyVDM"}

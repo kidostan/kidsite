@@ -1,0 +1,7 @@
+:HL["/_next/static/chunks/42946kb2_5u4r.css","style"]
+:HL["/images/krasnaya-shapochka_v3.webp","image"]
+:HL["/images/belosnezhka-i-sem-gnomov_v3.webp","image"]
+:HL["/images/genzel-i-gretel_v3.webp","image"]
+:HL["/images/rapuncel_v3.webp","image"]
+:HL["/images/rumpelshtilchen_v3.webp","image"]
+0:{"tree":{"name":"","param":null,"prefetchHints":20,"slots":{"children":{"name":"(public)","param":null,"prefetchHints":0,"slots":{"children":{"name":"categories","param":null,"prefetchHints":0,"slots":{"children":{"name":"slug","param":{"type":"d","key":"%D1%81%D0%BA%D0%B0%D0%B7%D0%BA%D0%B8-%D0%B1%D1%80%D0%B0%D1%82%D1%8C%D0%B5%D0%B2-%D0%B3%D1%80%D0%B8%D0%BC%D0%BC","siblings":null},"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}}}}}},"staleTime":300,"buildId":"FQxAyP4Gi4cYfdRCCyVDM"}
