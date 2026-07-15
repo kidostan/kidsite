@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const [newStories, popularStories, ageCategories, authorCategories] =
+  const [newStories, popularStories, ageCategories, authorCategories, pochemuchki, pochemuchkiCategory] =
     await Promise.all([
       prisma.story.findMany({
         where: { status: "published" },
@@ -56,6 +56,23 @@ export default async function HomePage() {
             ],
           },
         },
+        include: { _count: { select: { storyCategories: true } } },
+      }),
+      prisma.story.findMany({
+        where: {
+          status: "published",
+          storyCategories: {
+            some: { category: { slug: "pochemuchki" } },
+          },
+        },
+        include: {
+          storyCategories: { include: { category: true } },
+        },
+        orderBy: { createdAt: "desc" },
+        take: 12,
+      }),
+      prisma.category.findUnique({
+        where: { slug: "pochemuchki" },
         include: { _count: { select: { storyCategories: true } } },
       }),
     ]);
@@ -180,6 +197,56 @@ export default async function HomePage() {
                   }}
                 />
               ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Сказки-почемучки */}
+      {pochemuchki.length > 0 && (
+        <section className="py-12 bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50">
+          <div className="container mx-auto px-4">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <span className="text-4xl">❓</span>
+                <div>
+                  <h2 className="text-2xl font-bold text-amber-900">Сказки-почемучки</h2>
+                  <p className="text-sm text-amber-700">
+                    {pochemuchkiCategory?._count.storyCategories || pochemuchki.length} познавательных сказок для любопытных
+                  </p>
+                </div>
+              </div>
+              <Link
+                href="/pochemuchki"
+                className="text-amber-700 hover:text-amber-900 text-sm font-medium"
+              >
+                Все почему →
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {pochemuchki.map((story) => {
+                const meta = parseMetadata(story.metadata);
+                const question = (meta as any)?.question || story.title;
+                return (
+                  <Link
+                    key={story.id}
+                    href={`/pochemuchki/${story.slug}`}
+                    className="group block bg-white rounded-xl p-4 hover:shadow-md transition-shadow border border-amber-100"
+                  >
+                    <div className="flex items-start gap-3">
+                      <span className="text-2xl shrink-0 mt-0.5">💡</span>
+                      <div className="min-w-0">
+                        <h3 className="font-semibold text-gray-900 text-sm line-clamp-2 group-hover:text-amber-700 transition-colors">
+                          {story.title}
+                        </h3>
+                        <p className="text-xs text-amber-600 mt-1 line-clamp-1">
+                          {question}
+                        </p>
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </section>
