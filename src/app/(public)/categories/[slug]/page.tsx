@@ -85,6 +85,7 @@ export default async function CategoryPage({ params }: Props) {
                   ...story,
                   metadata: parseMetadata(story.metadata),
                 }}
+                basePath={decodedSlug === "pochemuchki" ? "/pochemuchki" : "/stories"}
               />
             ))}
           </div>

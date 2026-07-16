@@ -11,6 +11,9 @@ export function Header() {
           <Link href="/stories" className="text-gray-600 hover:text-purple-600 transition-colors">
             Сказки
           </Link>
+          <Link href="/pochemuchki" className="text-amber-700 hover:text-amber-900 transition-colors font-medium">
+            Почемучки
+          </Link>
           <Link href="/categories" className="text-gray-600 hover:text-purple-600 transition-colors">
             Категории
           </Link>

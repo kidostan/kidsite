@@ -22,8 +22,9 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
+  const decodedSlug = decodeURIComponent(slug);
   const story = await prisma.story.findUnique({
-    where: { slug },
+    where: { slug: decodedSlug },
     include: { seoMetadata: true },
   });
 
@@ -55,9 +56,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function StoryPage({ params }: Props) {
   const { slug } = await params;
+  const decodedSlug = decodeURIComponent(slug);
 
   const story = await prisma.story.findUnique({
-    where: { slug },
+    where: { slug: decodedSlug },
     include: {
       images: { orderBy: { paragraphIndex: "asc" } },
       paragraphs: { orderBy: { paragraphIndex: "asc" } },

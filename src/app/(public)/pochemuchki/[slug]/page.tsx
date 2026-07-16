@@ -91,7 +91,7 @@ export default async function PochemuchkaPage({ params }: Props) {
         <ol className="flex flex-wrap items-center gap-1">
           <li><Link href="/" className="hover:text-amber-700">Главная</Link></li>
           <li><span className="mx-2">/</span></li>
-          <li><Link href="/categories/pochemuchki" className="hover:text-amber-700">Почемучки</Link></li>
+          <li><Link href="/pochemuchki" className="hover:text-amber-700">Почемучки</Link></li>
           <li><span className="mx-2">/</span></li>
           <li className="text-gray-900">{story.title}</li>
         </ol>

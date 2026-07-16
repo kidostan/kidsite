@@ -11,7 +11,10 @@ export const metadata = {
 export default async function StoriesPage() {
   const [stories, categories] = await Promise.all([
     prisma.story.findMany({
-      where: { status: "published" },
+      where: {
+        status: "published",
+        storyCategories: { none: { category: { slug: "pochemuchki" } } },
+      },
       include: {
         images: { take: 1, orderBy: { sortOrder: "asc" } },
         category: true,

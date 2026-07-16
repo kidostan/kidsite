@@ -42,6 +42,7 @@ export default async function TagPage({ params }: Props) {
             include: {
               images: { take: 1, orderBy: { sortOrder: "asc" } },
               category: true,
+              storyCategories: { include: { category: true } },
             },
           },
         },
@@ -65,15 +66,21 @@ export default async function TagPage({ params }: Props) {
           <p className="text-gray-500">Сказок с этим тегом пока нет.</p>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
-            {tag.stories.map((st) => (
-              <StoryCard
-                key={st.story.id}
-                story={{
-                  ...st.story,
-                  metadata: parseMetadata(st.story.metadata),
-                }}
-              />
-            ))}
+            {tag.stories.map((st) => {
+              const isPochemuchka = st.story.storyCategories?.some(
+                (sc) => sc.category?.slug === "pochemuchki"
+              );
+              return (
+                <StoryCard
+                  key={st.story.id}
+                  story={{
+                    ...st.story,
+                    metadata: parseMetadata(st.story.metadata),
+                  }}
+                  basePath={isPochemuchka ? "/pochemuchki" : "/stories"}
+                />
+              );
+            })}
           </div>
         )}
       </div>

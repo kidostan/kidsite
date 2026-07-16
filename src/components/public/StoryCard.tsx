@@ -12,14 +12,15 @@ interface StoryCardProps {
     category?: { name: string; slug: string } | null;
     images?: { imageUrl: string }[];
   };
+  basePath?: string;
 }
 
-export function StoryCard({ story }: StoryCardProps) {
+export function StoryCard({ story, basePath = "/stories" }: StoryCardProps) {
   const meta = story.metadata as { age_min?: number; age_max?: number; difficulty?: string };
   const coverImage = story.coverImageUrl || story.images?.[0]?.imageUrl;
 
   return (
-    <Link href={`/stories/${story.slug}`} className="group block">
+    <Link href={`${basePath}/${story.slug}`} className="group block">
       <div className="relative aspect-[3/4] rounded-xl overflow-hidden bg-gray-100">
         {coverImage ? (
           <img

@@ -20,7 +20,10 @@ export default async function HomePage() {
   const [newStories, popularStories, ageCategories, authorCategories, pochemuchki, pochemuchkiCategory] =
     await Promise.all([
       prisma.story.findMany({
-        where: { status: "published" },
+        where: {
+          status: "published",
+          storyCategories: { none: { category: { slug: "pochemuchki" } } },
+        },
         include: {
           images: { take: 1, orderBy: { sortOrder: "asc" } },
           category: true,
@@ -29,7 +32,10 @@ export default async function HomePage() {
         take: 10,
       }),
       prisma.story.findMany({
-        where: { status: "published" },
+        where: {
+          status: "published",
+          storyCategories: { none: { category: { slug: "pochemuchki" } } },
+        },
         include: {
           images: { take: 1, orderBy: { sortOrder: "asc" } },
           category: true,

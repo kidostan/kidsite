@@ -1,5 +1,5 @@
 1:"$Sreact.fragment"
 2:I[97367,["/_next/static/chunks/05-c3ty_6dwfk.js","/_next/static/chunks/14mrh2-p_w84d.js"],"OutletBoundary"]
 3:"$Sreact.suspense"
-0:{"rsc":["$","$1","c",{"children":[["$","main",null,{"className":"flex-1 py-8","children":["$","div",null,{"className":"container mx-auto px-4","children":[["$","h1",null,{"className":"text-3xl font-bold mb-6","children":["Тег: ","спячку",["$","span",null,{"className":"text-gray-400 text-lg ml-2","children":["(",0,")"]}]]}],["$","p",null,{"className":"text-gray-500","children":"Сказок с этим тегом пока нет."}]]}]}],null,["$","$L2",null,{"children":["$","$3",null,{"name":"Next.MetadataOutlet","children":"$@4"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"TOSDo-FYbMsB6Bzl0jRHR"}
+0:{"rsc":["$","$1","c",{"children":[["$","main",null,{"className":"flex-1 py-8","children":["$","div",null,{"className":"container mx-auto px-4","children":[["$","h1",null,{"className":"text-3xl font-bold mb-6","children":["Тег: ","спячку",["$","span",null,{"className":"text-gray-400 text-lg ml-2","children":["(",0,")"]}]]}],["$","p",null,{"className":"text-gray-500","children":"Сказок с этим тегом пока нет."}]]}]}],null,["$","$L2",null,{"children":["$","$3",null,{"name":"Next.MetadataOutlet","children":"$@4"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"lgE4Fkf-tUT5MXD7BseFG"}
 4:null

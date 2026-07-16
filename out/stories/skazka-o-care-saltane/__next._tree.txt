@@ -1,7 +1,7 @@
-:HL["/_next/static/chunks/3wl_ut871k26_.css","style"]
+:HL["/_next/static/chunks/2ozxp_3ltgdpe.css","style"]
 :HL["/images/telefon_v3.webp","image"]
 :HL["/images/goluboy-schenok_v3.webp","image"]
 :HL["/images/alenkiy-cvetocek_v3.webp","image"]
 :HL["/images/bremenskie-muzykanty_v3.webp","image"]
 :HL["/images/po-shchuchyu-veleniyu_v3.webp","image"]
-0:{"tree":{"name":"","param":null,"prefetchHints":20,"slots":{"children":{"name":"(public)","param":null,"prefetchHints":0,"slots":{"children":{"name":"stories","param":null,"prefetchHints":0,"slots":{"children":{"name":"slug","param":{"type":"d","key":"skazka-o-care-saltane","siblings":null},"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}}}}}},"staleTime":300,"buildId":"TOSDo-FYbMsB6Bzl0jRHR"}
+0:{"tree":{"name":"","param":null,"prefetchHints":20,"slots":{"children":{"name":"(public)","param":null,"prefetchHints":0,"slots":{"children":{"name":"stories","param":null,"prefetchHints":0,"slots":{"children":{"name":"slug","param":{"type":"d","key":"skazka-o-care-saltane","siblings":null},"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}}}}}},"staleTime":300,"buildId":"lgE4Fkf-tUT5MXD7BseFG"}
